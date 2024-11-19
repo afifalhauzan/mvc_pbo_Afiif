@@ -21,7 +21,7 @@ if (isset($_GET['action'])) {
     // echo "No action specified.";
 }
 
-class ProgramKerja 
+class ProgramKerja
 {
     private int $nomorProgram;
     private string $nama;
@@ -32,8 +32,7 @@ class ProgramKerja
         $nomorProgram = "",
         $nama = "",
         $suratKeterangan = "",
-    )
-    {
+    ) {
         $this->nomorProgram = $nomorProgram;
         $this->nama = $nama;
         $this->suratKeterangan = $suratKeterangan;
@@ -42,15 +41,15 @@ class ProgramKerja
     public function fetchAllProgramKerja()
     {
         global $mysqli;
-        
-            $query = "SELECT * FROM program_kerja";
-            $result = $mysqli->query($query);
-        
-            if ($result && $result->num_rows > 0) {
-                return $result->fetch_all(MYSQLI_ASSOC);
-            } else {
-                return [];
-            }
+
+        $query = "SELECT * FROM program_kerja";
+        $result = $mysqli->query($query);
+
+        if ($result && $result->num_rows > 0) {
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } else {
+            return [];
+        }
     }
 
     public function fetchOneProgramKerja(int $nomorProgram)
@@ -63,7 +62,7 @@ class ProgramKerja
         return $result->fetch_assoc();
     }
 
-    public function insertProgramKerja() 
+    public function insertProgramKerja()
     {
         global $mysqli;
         $query = "INSERT INTO program_kerja (nomor, nama, surat_keterangan) 
@@ -75,41 +74,34 @@ class ProgramKerja
 
     public function updateProgramKerja($nomor, $title, $suratKeterangan)
     {
-        global $mysqli; 
+        global $mysqli;
         $sql = "UPDATE program_kerja SET nama = ?, surat_keterangan = ? WHERE nomor = ?";
-        
+
         $stmt = $mysqli->prepare($sql);
-    
+
         $stmt->bind_param('ssi', $title, $suratKeterangan, $nomor);
-    
+
         if ($stmt->execute()) {
             return true; // Successful update
         } else {
             return false; // Failed update
         }
     }
-    
-    
+
+
 
     public function deleteProgramKerja($nomor)
     {
-    global $mysqli; 
-    
-    // Prepare the SQL query to delete the program based on the 'nomor'
-    $sql = "DELETE FROM program_kerja WHERE nomor = ?";
-    
-    // Prepare the statement
-    $stmt = $mysqli->prepare($sql);
-    
-    // Bind the parameter (the program number)
-    $stmt->bind_param('i', $nomor);
-    
-    // Execute the query and check if the deletion is successful
-    if ($stmt->execute()) {
-        return true; // Successful delete
-    } else {
-        return false; // Failed delete
-    }
-    }
+        global $mysqli;
 
+        $sql = "DELETE FROM program_kerja WHERE nomor = ?";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->bind_param('i', $nomor);
+
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
